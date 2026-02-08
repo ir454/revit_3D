@@ -3,7 +3,10 @@ document.getElementById("searchBtn").onclick = async () => {
   const song = document.getElementById("song").value;
   const lyrics = document.getElementById("lyrics");
 
-  if (!artist || !song) return;
+  if (!artist || !song) {
+    lyrics.textContent = "Please enter both artist and song.";
+    return;
+  }
 
   const res = await fetch(`https://api.lyrics.ovh/v1/${artist}/${song}`);
   const data = await res.json();
