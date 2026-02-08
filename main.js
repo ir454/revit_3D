@@ -1,25 +1,30 @@
 document.getElementById("searchBtn").onclick = async () => {
   const artist = document.getElementById("artist").value;
   const song = document.getElementById("song").value;
-  const lyricsBox = document.getElementById("lyrics");
+  const lyrics = document.getElementById("lyrics");
 
-  if (!artist || !song) return;
+  if (!artist || !song) {
+    lyrics.textContent = "Enter artist and song.";
+    return;
+  }
 
-  lyricsBox.textContent = "Loading...";
+  lyrics.textContent = "Loading...";
 
   try {
     const res = await fetch(
-      `https://lrclib.net/api/search?track_name=${encodeURIComponent(song)}&artist_name=${encodeURIComponent(artist)}`
+      `https://lrclib.net/api/get?artist_name=${encodeURIComponent(artist)}&track_name=${encodeURIComponent(song)}`
     );
+
+    if (!res.ok) throw new Error("Request failed");
+
     const data = await res.json();
 
-    const lyrics =
-      data?.[0]?.plainLyrics ||
-      data?.[0]?.syncedLyrics ||
-      "Lyrics not found";
+    lyrics.textContent =
+      data.plainLyrics ||
+      data.syncedLyrics ||
+      "Lyrics not found.";
 
-    lyricsBox.textContent = lyrics;
-  } catch {
-    lyricsBox.textContent = "Error fetching lyrics.";
+  } catch (err) {
+    lyrics.textContent = "Error fetching lyrics.";
   }
 };
