@@ -1,30 +1,25 @@
-document.getElementById("searchBtn").onclick = async () => {
-  const artist = document.getElementById("artist").value;
-  const song = document.getElementById("song").value;
-  const lyrics = document.getElementById("lyrics");
+const $ = id => document.getElementById(id);
+const artist = $("artist"), song = $("song"),
+      lyrics = $("lyrics"), btn = $("search");
 
-  if (!artist || !song) {
-    lyrics.textContent = "Enter artist and song.";
-    return;
-  }
+let controller;
+
+btn.onclick = async () => {
+  if (!artist.value || !song.value) return;
+
+  controller?.abort();
+  controller = new AbortController();
 
   lyrics.textContent = "Loading...";
 
   try {
-    const res = await fetch(
-      `https://lrclib.net/api/get?artist_name=${encodeURIComponent(artist)}&track_name=${encodeURIComponent(song)}`
+    const r = await fetch(
+      `https://lrclib.net/api/get?artist_name=${encodeURIComponent(artist.value)}&track_name=${encodeURIComponent(song.value)}`,
+      { signal: controller.signal }
     );
-
-    if (!res.ok) throw new Error("Request failed");
-
-    const data = await res.json();
-
-    lyrics.textContent =
-      data.plainLyrics ||
-      data.syncedLyrics ||
-      "Lyrics not found.";
-
-  } catch (err) {
-    lyrics.textContent = "Error fetching lyrics.";
+    const d = await r.json();
+    lyrics.textContent = d.plainLyrics || d.syncedLyrics || "Not found";
+  } catch(e){
+    if (e.name !== "AbortError") lyrics.textContent = "Error";
   }
 };
