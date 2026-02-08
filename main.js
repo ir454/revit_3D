@@ -7,5 +7,7 @@ document.getElementById("searchBtn").onclick = async () => {
 
   const res = await fetch(`https://api.lyrics.ovh/v1/${artist}/${song}`);
   const data = await res.json();
+
   lyrics.textContent = data.lyrics || "Lyrics not found";
 };
+
