@@ -3,16 +3,12 @@ body {
 }
 
 h1 {
-  margin: 0 0 10px;
+  margin-bottom: 10px;
 }
 
 input, button {
   display: block;
   margin: 5px 0;
-}
-
-button {
-  background: white;
 }
 
 pre {
