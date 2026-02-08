@@ -2,7 +2,7 @@ document.getElementById("searchBtn").onclick = async () => {
   const artist = document.getElementById("artist").value;
   const song = document.getElementById("song").value;
   const lyrics = document.getElementById("lyrics");
-  const video = document.getElementById("video");
+  const ytLink = document.getElementById("ytLink");
 
   if (!artist || !song) return;
 
@@ -12,5 +12,6 @@ document.getElementById("searchBtn").onclick = async () => {
   lyrics.textContent = data.lyrics || "Lyrics not found";
 
   const query = encodeURIComponent(`${artist} ${song}`);
-  video.src = `https://www.youtube.com/embed/videoseries?listType=search&list=${query}`;
+  ytLink.textContent = "Open YouTube video";
+  ytLink.href = `https://www.youtube.com/results?search_query=${query}`;
 };
