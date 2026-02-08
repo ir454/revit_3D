@@ -12,5 +12,5 @@ document.getElementById("searchBtn").onclick = async () => {
   lyrics.textContent = data.lyrics || "Lyrics not found";
 
   const query = encodeURIComponent(`${artist} ${song}`);
-  video.src = `https://www.youtube.com/embed?listType=search&list=${query}`;
+  video.src = `https://www.youtube.com/embed/videoseries?listType=search&list=${query}`;
 };
